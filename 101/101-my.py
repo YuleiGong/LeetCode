@@ -13,6 +13,7 @@ class Solution:
     def isSymmetric(self, root: TreeNode) -> bool:
         """
         检查左子树和右子树的数目是否相等
+        DFS: 自顶向下
         """
         if not root:
             return True
@@ -22,9 +23,10 @@ class Solution:
                 return True
             if (left == None or right == None):
                 return False
-            if left.val!=right.val:
+            if left.val != right.val:
                 return False
             return dfs(left.left,right.right) and dfs(left.right,right.left)
+
         return dfs(root.left,root.right)
 
 
