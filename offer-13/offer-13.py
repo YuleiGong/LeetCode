@@ -6,34 +6,40 @@ from __future__ import absolute_import
 
 class Solution:
     def movingCount(self, m: int, n: int, k: int) -> int:
-        counts = 0
         rows = m
         cols = n
 
         stack = [(0,0)]
-        points = [(0,1),(0,-1),(1,0),(-1,0)]
         visited = set()
-        visited.add("00")
 
         while stack:
-            row,col = stack.pop()
-            if row + col <= k:
-                counts += 1
+            row,col = stack.pop(0)
+            if (row,col) not in visited and self._add(row,col) <= k:
+                visited.add((row,col))
+                for p in [(0,1),(1,0)]:
+                    tmp_row = row + p[0]
+                    tmp_col = col + p[1]
+                    if 0 <= tmp_row < rows and 0<= tmp_col < cols and (tmp_row,tmp_row) not in visited:
+                        stack.append((tmp_row,tmp_col))
+        return len(visited)
 
-            for p in points:
-                tmp_row = row + p[0]
-                tmp_col = col + p[1]
-                _str = "{}{}".format(tmp_row,tmp_col)
-                if 0 <= tmp_row < rows and 0<= tmp_col < cols and _str not in visited:
-                    visited.add(_str)
-                    stack.append((tmp_row,tmp_col))
-        return counts
+    def _add(self,row,col):
+        tmp = 0
+        while row > 0:
+            tmp += row % 10
+            row //= 10
+        while col > 0:
+            tmp += col % 10
+            col //= 10
+        return tmp
+
 
 if __name__ == '__main__':
-    m = 11
-    n = 8
-    k = 17
+    m = 36
+    n = 11
+    k = 15
     S = Solution()
     counts = S.movingCount(m,n,k)
     print (counts)
+    #counts = S._add(3,3)
 
